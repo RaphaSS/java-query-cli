@@ -2,10 +2,14 @@ package br.com.raphael.javaquerycli.filtering;
 
 import java.util.List;
 
-public interface Filter<T> {
+public class Filter<T> {
 
-	<P> void filter(List<T> list, String property, P value);
+	public <P> void filter(final List<T> list, final String property, final P value) {
 
-	void distinct(List<T> list, String property);
+	}
+
+	public void distinct(final List<T> list, final String property) {
+
+	}
 
 }

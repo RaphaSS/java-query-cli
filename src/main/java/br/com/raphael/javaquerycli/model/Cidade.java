@@ -1,5 +1,6 @@
 package br.com.raphael.javaquerycli.model;
 
+import br.com.raphael.javaquerycli.parsing.Parser;
 import br.com.raphael.javaquerycli.parsing.annotation.Field;
 
 public class Cidade {
@@ -14,12 +15,12 @@ public class Cidade {
 	private String name;
 
 	@Field("capital")
-	private boolean capital;
+	private Boolean capital;
 
-	@Field("longitude")
+	@Field("lon")
 	private Double longitute;
 
-	@Field("latitude")
+	@Field("lat")
 	private Double latitude;
 
 	@Field("no_accents")
@@ -34,10 +35,11 @@ public class Cidade {
 	@Field("mesoregion")
 	private String mesoregion;
 
+	public Cidade() {}
+
 	public Cidade(final Long ibgeId, final String uf, final String name, final boolean capital, final Double longitute,
-			final Double latitude, final String noAccents, final String alternativeNames, final String microregion,
-			final String mesoregion) {
-		super();
+		final Double latitude, final String noAccents, final String alternativeNames, final String microregion,
+		final String mesoregion) {
 		this.ibgeId = ibgeId;
 		this.uf = uf;
 		this.name = name;
@@ -48,6 +50,15 @@ public class Cidade {
 		this.alternativeNames = alternativeNames;
 		this.microregion = microregion;
 		this.mesoregion = mesoregion;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if(obj instanceof Cidade) {
+			final Cidade o = (Cidade) obj;
+			return Parser.equals(this, o, Cidade.class);
+		}
+		return super.equals(obj);
 	}
 
 	public Long getIbgeId() {

@@ -4,7 +4,7 @@ public class InvalidDataSetException extends ParsingException {
 
 	private static final long serialVersionUID = 935572793055213364L;
 
-	protected InvalidDataSetException() {
+	public InvalidDataSetException() {
 		super("Conjunto de dados invalido!");
 	}
 
