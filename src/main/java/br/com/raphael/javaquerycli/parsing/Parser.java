@@ -5,8 +5,10 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import br.com.raphael.javaquerycli.parsing.exception.InvalidDataSetException;
 
@@ -99,14 +101,25 @@ public abstract class Parser<T> {
 
 	public void write(final List<T> list, final OutputStream outputStream) {
 		final PrintWriter writer = new PrintWriter(outputStream);
-		// Arrays.asList(clazz.getDeclaredFields()).stream()
-		// .map(f ->
-		// f.getDeclaredAnnotation(br.com.raphael.javaquerycli.parsing.annotation.Field.class).value())
-		// .forEach(h -> {
-		// writer.print(h);
-		// writer.print(",");
-		// nao pode ter essa ultima virgula
-		// });
+		final List<String> headers = Arrays.asList(clazz.getDeclaredFields()).stream()
+			.map(f -> f.getDeclaredAnnotation(br.com.raphael.javaquerycli.parsing.annotation.Field.class).value())
+			.collect(Collectors.toList());
+		final String strHeaders = headers.stream()
+			.collect(Collectors.joining(","));
+
+		writer.println(strHeaders);
+
+		list.stream()
+			.forEach(e -> writer.println(
+				headers.stream()
+					.map(h -> {
+						final Object value = getValue(e, h);
+						if(value instanceof Boolean)
+							return Boolean.TRUE.equals(value) ? value.toString() : "";
+						else return value.toString();
+					})
+					.collect(Collectors.joining(","))));
+		writer.close();
 	}
 
 }
