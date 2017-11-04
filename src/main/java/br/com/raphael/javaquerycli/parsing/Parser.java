@@ -40,14 +40,8 @@ public abstract class Parser<T> {
 		return true;
 	}
 
-	private final Class<T> clazz;
-
-	public Parser(final Class<T> clazz) {
-		this.clazz = clazz;
-	}
-
 	@SuppressWarnings("unchecked")
-	private <P> P getValue(final T element, final String property) {
+	public static <T, P> P getValue(final T element, final String property) {
 		final Field field = getField(element.getClass(), property);
 		try {
 			return (P) field.get(element);
@@ -55,6 +49,12 @@ public abstract class Parser<T> {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	private final Class<T> clazz;
+
+	public Parser(final Class<T> clazz) {
+		this.clazz = clazz;
 	}
 
 	private <P> void setValue(final T element, final String property, final P value) {
@@ -119,6 +119,7 @@ public abstract class Parser<T> {
 						else return value.toString();
 					})
 					.collect(Collectors.joining(","))));
+
 		writer.close();
 	}
 
