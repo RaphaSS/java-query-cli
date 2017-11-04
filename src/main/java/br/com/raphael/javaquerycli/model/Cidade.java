@@ -1,7 +1,7 @@
 package br.com.raphael.javaquerycli.model;
 
-import br.com.raphael.javaquerycli.parsing.Parser;
 import br.com.raphael.javaquerycli.parsing.annotation.Field;
+import br.com.raphael.javaquerycli.parsing.utils.ObjectUtils;
 
 public class Cidade {
 
@@ -56,7 +56,7 @@ public class Cidade {
 	public boolean equals(final Object obj) {
 		if(obj instanceof Cidade) {
 			final Cidade o = (Cidade) obj;
-			return Parser.equals(this, o, Cidade.class);
+			return ObjectUtils.equals(this, o, Cidade.class);
 		}
 		return super.equals(obj);
 	}

@@ -15,17 +15,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
-import br.com.raphael.javaquerycli.filtering.Filter;
+import br.com.raphael.javaquerycli.collections.CollectionUtils;
 import br.com.raphael.javaquerycli.model.Cidade;
-import br.com.raphael.javaquerycli.parsing.impl.CidadeParser;
+import br.com.raphael.javaquerycli.parsing.utils.ObjectIOUtils;
 import br.com.raphael.javaquerycli.utils.StringOutputStream;
 import junitx.framework.ListAssert;
 
 @RunWith(BlockJUnit4ClassRunner.class)
 public class JavaQueryCLITest {
-
-	private final CidadeParser parser = new CidadeParser();
-	private final Filter<Cidade> filterer = new Filter<>();
 
 	private final List<Cidade> allCities = new ArrayList<>(Arrays.asList(
 		new Cidade((long) 1100015, "RO", "Alta Floresta D'Oeste", false, -61.9998238963, -11.9355403048,
@@ -49,7 +46,7 @@ public class JavaQueryCLITest {
 	public void leArquivo() {
 		final File file = new File("data/test.csv");
 		try(InputStream inputStream = new FileInputStream(file)) {
-			final List<Cidade> readCities = parser.read(inputStream);
+			final List<Cidade> readCities = ObjectIOUtils.read(inputStream, Cidade.class);
 
 			ListAssert.assertEquals(allCities, readCities);
 		} catch(final IOException e) {
@@ -60,7 +57,7 @@ public class JavaQueryCLITest {
 	@Test
 	public void escreveLista() {
 		final OutputStream outputStream = new StringOutputStream();
-		parser.write(allCities, outputStream);
+		ObjectIOUtils.write(allCities, outputStream, Cidade.class);
 		final String actual = outputStream.toString();
 
 		Assert.assertEquals(fileContent, actual);
@@ -68,7 +65,7 @@ public class JavaQueryCLITest {
 
 	@Test
 	public void countAll() {
-		final List<Cidade> cidades = parser.read(new ByteArrayInputStream(fileContent.getBytes()));
+		final List<Cidade> cidades = ObjectIOUtils.read(new ByteArrayInputStream(fileContent.getBytes()), Cidade.class);
 
 		Assert.assertEquals(4, cidades.size());
 	}
@@ -77,8 +74,8 @@ public class JavaQueryCLITest {
 	public void countDistinctMesoregion() {
 		final List<String> distinctFields = Arrays.asList("Leste Rondoniense", "Leste Rondoniense", "Madeira-Guaporé");
 
-		final List<Cidade> readCities = parser.read(new ByteArrayInputStream(fileContent.getBytes()));
-		final List<?> distinct = filterer.distinct(readCities, "mesoregion");
+		final List<Cidade> readCities = ObjectIOUtils.read(new ByteArrayInputStream(fileContent.getBytes()), Cidade.class);
+		final List<?> distinct = CollectionUtils.distinct(readCities, "mesoregion");
 
 		ListAssert.assertEquals(distinctFields, distinct);
 	}
@@ -93,8 +90,8 @@ public class JavaQueryCLITest {
 			new Cidade((long) 1100205, "RO", "Porto Velho", true, -63.8314456544, -8.76889179, "Porto Velho", "",
 				"Porto Velho", "Madeira-Guaporé"));
 
-		List<Cidade> filteredCities = parser.read(new ByteArrayInputStream(fileContent.getBytes()));
-		filteredCities = filterer.filter(filteredCities, "uf", "RO");
+		List<Cidade> filteredCities = ObjectIOUtils.read(new ByteArrayInputStream(fileContent.getBytes()), Cidade.class);
+		filteredCities = CollectionUtils.filter(filteredCities, "uf", "RO");
 
 		ListAssert.assertEquals(cidades, filteredCities);
 	}
