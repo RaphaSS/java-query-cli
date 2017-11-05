@@ -10,10 +10,12 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import br.com.raphael.javaquerycli.parsing.exception.InvalidDataSetException;
+import br.com.raphael.javaquerycli.parsing.exception.ParsingException;
+import br.com.raphael.javaquerycli.parsing.exception.PropertyNotFoundException;
 
 public class ObjectIOUtils {
 
-	public static <T> List<T> read(final InputStream inputStream, final Class<T> clazz) {
+	public static <T> List<T> read(final InputStream inputStream, final Class<T> clazz) throws ParsingException {
 		List<T> list;
 		try(final Scanner scanner = new Scanner(inputStream);) {
 			final String[] headers = scanner.nextLine().split(",");
@@ -22,7 +24,8 @@ public class ObjectIOUtils {
 				try {
 					final String[] values = scanner.nextLine().split(",");
 
-					if(headers.length != values.length) throw new InvalidDataSetException();
+					if(headers.length != values.length)
+						throw new InvalidDataSetException();
 
 					final T element = clazz.newInstance();
 					for(int i = 0; i < headers.length; i++) {
@@ -52,14 +55,19 @@ public class ObjectIOUtils {
 			.forEach(e -> writer.println(
 				headers.stream()
 					.map(h -> {
-						final Object value = ObjectUtils.getValue(e, h);
-						if(value instanceof Boolean)
-							return Boolean.TRUE.equals(value) ? value.toString() : "";
-						else return value.toString();
+						Object value;
+						try {
+							value = ObjectUtils.getValue(e, h);
+							if(value instanceof Boolean)
+								return Boolean.TRUE.equals(value) ? value.toString() : "";
+							else return value.toString();
+						} catch(final PropertyNotFoundException e1) {
+							return null;
+						}
 					})
 					.collect(Collectors.joining(","))));
 
-		writer.close();
+		writer.flush();
 	}
 
 }

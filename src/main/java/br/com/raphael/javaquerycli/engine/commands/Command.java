@@ -26,7 +26,7 @@ public abstract class Command {
 		return arguments;
 	}
 
-	public void setArguments(final String[] arguments) {
+	void setArguments(final String[] arguments) {
 		this.arguments = Arrays.copyOf(arguments, expectedArgumentsLength);
 	}
 

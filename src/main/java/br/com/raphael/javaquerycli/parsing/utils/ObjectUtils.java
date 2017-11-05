@@ -9,7 +9,7 @@ import br.com.raphael.javaquerycli.parsing.exception.PropertyNotFoundException;
 
 public abstract class ObjectUtils {
 
-	private static Field getField(final Class<?> clazz, final String property) {
+	private static Field getField(final Class<?> clazz, final String property) throws PropertyNotFoundException {
 		final Set<Field> fields = getAnnotatedFields(clazz, br.com.raphael.javaquerycli.parsing.annotation.Field.class);
 		for(final Field field : fields) {
 			final br.com.raphael.javaquerycli.parsing.annotation.Field f = field
@@ -42,7 +42,7 @@ public abstract class ObjectUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T, P> P getValue(final T element, final String property) {
+	public static <T, P> P getValue(final T element, final String property) throws PropertyNotFoundException {
 		final Field field = getField(element.getClass(), property);
 		try {
 			return (P) field.get(element);
@@ -52,7 +52,7 @@ public abstract class ObjectUtils {
 		}
 	}
 
-	public static <T, P> void setValue(final T element, final String property, final P value) {
+	public static <T, P> void setValue(final T element, final String property, final P value) throws PropertyNotFoundException {
 		final Field field = getField(element.getClass(), property);
 		try {
 			if(Long.class.equals(field.getType())) {

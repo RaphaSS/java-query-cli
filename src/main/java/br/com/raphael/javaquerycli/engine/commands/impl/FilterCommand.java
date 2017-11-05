@@ -8,4 +8,12 @@ public class FilterCommand extends Command {
 		super("filter", 2);
 	}
 
+	public String getProperty() {
+		return getArguments()[0];
+	}
+
+	public String getValue() {
+		return getArguments()[1];
+	}
+
 }

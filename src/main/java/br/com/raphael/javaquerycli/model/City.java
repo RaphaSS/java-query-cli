@@ -3,7 +3,7 @@ package br.com.raphael.javaquerycli.model;
 import br.com.raphael.javaquerycli.parsing.annotation.Field;
 import br.com.raphael.javaquerycli.parsing.utils.ObjectUtils;
 
-public class Cidade {
+public class City {
 
 	@Field("ibge_id")
 	private Long ibgeId;
@@ -35,9 +35,9 @@ public class Cidade {
 	@Field("mesoregion")
 	private String mesoregion;
 
-	public Cidade() {}
+	public City() {}
 
-	public Cidade(final Long ibgeId, final String uf, final String name, final boolean capital, final Double longitute,
+	public City(final Long ibgeId, final String uf, final String name, final boolean capital, final Double longitute,
 		final Double latitude, final String noAccents, final String alternativeNames, final String microregion,
 		final String mesoregion) {
 		this.ibgeId = ibgeId;
@@ -54,9 +54,9 @@ public class Cidade {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if(obj instanceof Cidade) {
-			final Cidade o = (Cidade) obj;
-			return ObjectUtils.equals(this, o, Cidade.class);
+		if(obj instanceof City) {
+			final City o = (City) obj;
+			return ObjectUtils.equals(this, o, City.class);
 		}
 		return super.equals(obj);
 	}

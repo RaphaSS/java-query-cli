@@ -6,4 +6,8 @@ public class CountDistinctCommand extends CountCommand {
 		super(2);
 	}
 
+	public String getProperty() {
+		return getArguments()[1];
+	}
+
 }
