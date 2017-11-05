@@ -18,7 +18,7 @@ public class JavaQueryCLI {
 	public static void main(final String[] args) throws FileNotFoundException {
 		UI.showWelcome();
 		Command command;
-		final List<City> list = ObjectIOUtils.read(new FileInputStream("data/cidades.csv"), City.class);
+		final List<City> list = ObjectIOUtils.read(new FileInputStream(args[0]), City.class);
 		final CommandExecutor<City> commandExecutor = new CommandExecutor<>(list, System.out, City.class);
 		do {
 			command = UI.askCommand();
