@@ -19,9 +19,9 @@ public class CommandFactory {
 
 	private static String[] parseCommandLine(final String rawCommandLine) {
 		final List<String> matches = new ArrayList<>();
-		final Matcher matcher = Pattern.compile("([a-zA-Zá-ź]+|'[a-zA-Zá-ź ]+')").matcher(rawCommandLine);
+		final Matcher matcher = Pattern.compile("([a-zA-Zá-ź]+|'([a-zA-Zá-ź ]+)'|\\*)").matcher(rawCommandLine);
 		while(matcher.find()) {
-			matches.add(matcher.group());
+			matches.add(matcher.group().replaceAll("'", ""));
 		}
 		return matches.toArray(new String[matches.size()]);
 	}
