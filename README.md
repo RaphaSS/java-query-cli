@@ -15,7 +15,7 @@ Para iniciar o programa, partindo-se da pasta do projeto, basta iniciá-lo com o
 java -jar target/java-query-cli.jar data/cidades.csv
 ```
 
-:exclamation: O arquivo fonte de dados não precisa ser o mesmo já presente no projeto. Caso deseje-se, pode ser utilizado um outro arquivo no mesmo formato.
+> :exclamation: O arquivo fonte de dados não precisa ser o mesmo já presente no projeto. Caso deseje-se, pode ser utilizado um outro arquivo no mesmo formato.
 
 Com o programa iniciado, é possível realizar 3 consultas:
 * __count *__ → Conta todos os elementos contidos na fonte de dados.
