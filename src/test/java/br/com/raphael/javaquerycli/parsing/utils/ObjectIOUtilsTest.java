@@ -1,5 +1,6 @@
 package br.com.raphael.javaquerycli.parsing.utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,7 +16,6 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 
 import br.com.raphael.javaquerycli.JavaQueryCLITest;
 import br.com.raphael.javaquerycli.model.City;
-import br.com.raphael.javaquerycli.utils.StringOutputStream;
 import junitx.framework.ListAssert;
 
 @RunWith(BlockJUnit4ClassRunner.class)
@@ -25,7 +25,7 @@ public class ObjectIOUtilsTest {
 
 	@BeforeClass
 	public static void setUp() {
-		final String datasetFile = System.getProperty("datasetfile");
+		final String datasetFile = "data/test.csv";// System.getProperty("datasetfile");
 		file = new File(datasetFile);
 	}
 
@@ -42,7 +42,7 @@ public class ObjectIOUtilsTest {
 
 	@Test
 	public void escreveLista() {
-		final OutputStream outputStream = new StringOutputStream();
+		final OutputStream outputStream = new ByteArrayOutputStream();
 		ObjectIOUtils.write(JavaQueryCLITest.ALL_CITIES, outputStream, City.class);
 		final String actual = outputStream.toString();
 
