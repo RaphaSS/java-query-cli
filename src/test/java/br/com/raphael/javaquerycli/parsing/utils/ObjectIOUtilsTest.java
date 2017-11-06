@@ -25,7 +25,7 @@ public class ObjectIOUtilsTest {
 
 	@BeforeClass
 	public static void setUp() {
-		final String datasetFile = "data/test.csv";// System.getProperty("datasetfile");
+		final String datasetFile = "data/test.csv";
 		file = new File(datasetFile);
 	}
 
