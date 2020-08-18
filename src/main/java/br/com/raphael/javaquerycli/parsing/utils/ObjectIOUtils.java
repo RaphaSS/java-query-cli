@@ -1,5 +1,8 @@
 package br.com.raphael.javaquerycli.parsing.utils;
 
+import static java.util.stream.Collectors.joining;
+import static org.apache.commons.lang3.StringUtils.LF;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -47,25 +50,29 @@ public class ObjectIOUtils {
 			.map(f -> f.getDeclaredAnnotation(br.com.raphael.javaquerycli.parsing.annotation.Field.class).value())
 			.collect(Collectors.toList());
 		final String strHeaders = headers.stream()
-			.collect(Collectors.joining(","));
+			.collect(joining(","));
 
-		writer.println(strHeaders);
+		writer.print(strHeaders);
+		writer.print(LF);
 
 		list.stream()
-			.forEach(e -> writer.println(
-				headers.stream()
-					.map(h -> {
-						Object value;
-						try {
-							value = ObjectUtils.getValue(e, h);
-							if(value instanceof Boolean)
-								return Boolean.TRUE.equals(value) ? value.toString() : "";
-							else return value.toString();
-						} catch(final PropertyNotFoundException e1) {
-							return null;
-						}
-					})
-					.collect(Collectors.joining(","))));
+			.forEach(e -> {
+				writer.print(
+					headers.stream()
+						.map(h -> {
+							Object value;
+							try {
+								value = ObjectUtils.getValue(e, h);
+								if(value instanceof Boolean)
+									return Boolean.TRUE.equals(value) ? value.toString() : "";
+								else return value.toString();
+							} catch(final PropertyNotFoundException e1) {
+								return null;
+							}
+						})
+						.collect(joining(",")));
+				writer.print(LF);
+			});
 
 		writer.flush();
 	}

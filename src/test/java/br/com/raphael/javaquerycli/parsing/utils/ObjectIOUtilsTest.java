@@ -1,5 +1,10 @@
 package br.com.raphael.javaquerycli.parsing.utils;
 
+import static br.com.raphael.javaquerycli.JavaQueryCLITest.ALL_CITIES;
+import static br.com.raphael.javaquerycli.JavaQueryCLITest.FILE_CONTENT;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,45 +13,39 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.BlockJUnit4ClassRunner;
 
-import br.com.raphael.javaquerycli.JavaQueryCLITest;
 import br.com.raphael.javaquerycli.model.City;
-import junitx.framework.ListAssert;
 
-@RunWith(BlockJUnit4ClassRunner.class)
 public class ObjectIOUtilsTest {
 
-	private static File file;
+    private static File file;
 
-	@BeforeClass
-	public static void setUp() {
-		final String datasetFile = "data/test.csv";
-		file = new File(datasetFile);
-	}
+    @BeforeClass
+    public static void setUp() {
+        final String datasetFile = "data/test.csv";
+        file = new File(datasetFile);
+    }
 
-	@Test
-	public void leArquivo() {
-		try(InputStream inputStream = new FileInputStream(file)) {
-			final List<City> readCities = ObjectIOUtils.read(inputStream, City.class);
+    @Test
+    public void leArquivo() {
+        try(InputStream inputStream = new FileInputStream(file)) {
+            final List<City> readCities = ObjectIOUtils.read(inputStream, City.class);
 
-			ListAssert.assertEquals(JavaQueryCLITest.ALL_CITIES, readCities);
-		} catch(final IOException e) {
-			Assert.fail(e.getMessage());
-		}
-	}
+            assertThat(readCities).isEqualTo(ALL_CITIES);
+        } catch(final IOException e) {
+            fail(e.getMessage());
+        }
+    }
 
-	@Test
-	public void escreveLista() {
-		final OutputStream outputStream = new ByteArrayOutputStream();
-		ObjectIOUtils.write(JavaQueryCLITest.ALL_CITIES, outputStream, City.class);
-		final String actual = outputStream.toString();
+    @Test
+    public void escreveLista() {
+        final OutputStream outputStream = new ByteArrayOutputStream();
+        ObjectIOUtils.write(ALL_CITIES, outputStream, City.class);
+        final String actual = outputStream.toString();
 
-		Assert.assertEquals(JavaQueryCLITest.FILE_CONTENT, actual);
-	}
+        assertThat(actual).isEqualTo(FILE_CONTENT);
+    }
 
 }
