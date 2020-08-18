@@ -1,5 +1,6 @@
 package br.com.raphael.javaquerycli.parsing.utils;
 
+import static java.lang.String.join;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.LF;
@@ -22,7 +23,7 @@ public class ObjectIOUtils {
 
 	public static <T> List<T> read(final InputStream inputStream, final Class<T> clazz) throws ParsingException {
 		List<T> list;
-		try(final Scanner scanner = new Scanner(inputStream);) {
+		try(final Scanner scanner = new Scanner(inputStream)) {
 			final String[] headers = scanner.nextLine().split(DELIMITER);
 
 			for(list = new ArrayList<>(); scanner.hasNextLine();) {
@@ -32,13 +33,13 @@ public class ObjectIOUtils {
 					if(headers.length != values.length)
 						throw new InvalidDataSetException();
 
-					final T element = clazz.newInstance();
+					final T element = clazz.getConstructor().newInstance();
 					for(int i = 0; i < headers.length; i++) {
 						ObjectUtils.setValue(element, headers[i], values[i]);
 					}
 
 					list.add(element);
-				} catch(InstantiationException | IllegalAccessException e) {
+				} catch(Exception e) {
 					e.printStackTrace();
 				}
 			}
@@ -49,8 +50,7 @@ public class ObjectIOUtils {
 	public static <T> void write(final List<T> list, final OutputStream outputStream, final Class<T> clazz) {
 		final PrintWriter writer = new PrintWriter(outputStream);
 		final List<String> headers = getHeaderFields(clazz);
-		final String strHeaders = headers.stream()
-			.collect(joining(DELIMITER));
+		final String strHeaders = join(DELIMITER, headers);
 
 		writeContent(writer, strHeaders);
 
@@ -78,7 +78,8 @@ public class ObjectIOUtils {
 			if(value instanceof Boolean)
 				return Boolean.TRUE.equals(value) ? value.toString() : "";
 			return value != null ? value.toString() : null;
-		} catch(final PropertyNotFoundException e1) {
+		} catch(final PropertyNotFoundException ex) {
+			ex.printStackTrace();
 			return null;
 		}
 	}
