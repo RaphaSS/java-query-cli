@@ -17,13 +17,18 @@ import br.com.raphael.javaquerycli.engine.exception.InvalidArgumentsException;
 
 public class CommandFactory {
 
+	public static final String COUNT = "count";
+	public static final String FILTER = "filter";
+	public static final String HELP = "help";
+	public static final String EXIT = "exit";
+
 	private static String[] parseCommandLine(final String rawCommandLine) {
 		final List<String> matches = new ArrayList<>();
 		final Matcher matcher = Pattern.compile("([a-zA-Zá-ź]+|'([a-zA-Zá-ź ]+)'|\\*)").matcher(rawCommandLine);
 		while(matcher.find()) {
 			matches.add(matcher.group().replaceAll("'", ""));
 		}
-		return matches.toArray(new String[matches.size()]);
+		return matches.toArray(new String[0]);
 	}
 
 	public static Command getInstance(final String rawCommandLine) throws InterpretationException {
@@ -35,7 +40,7 @@ public class CommandFactory {
 		final String[] arguments = Arrays.copyOfRange(commandLine, 1, commandLine.length);
 
 		switch(action) {
-			case "count":
+			case COUNT:
 				if(arguments.length == 1) {
 					if("*".equalsIgnoreCase(arguments[0])) {
 						command = new CountAllCommand();
@@ -46,15 +51,15 @@ public class CommandFactory {
 				}
 				break;
 
-			case "filter":
+			case FILTER:
 				command = new FilterCommand();
 				break;
 
-			case "help":
+			case HELP:
 				command = new HelpCommand();
 				break;
 
-			case "exit":
+			case EXIT:
 				command = new ExitCommand();
 				break;
 
