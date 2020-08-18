@@ -15,14 +15,14 @@ import br.com.raphael.javaquerycli.parsing.utils.ObjectIOUtils;
 public class CollectionUtilsTest {
 
 	@Test
-	public void countAll() {
+	public void shouldCountAll() {
 		final List<City> readCities = ObjectIOUtils.read(new ByteArrayInputStream(FILE_CONTENT.getBytes()), City.class);
 
 		assertThat(readCities).hasSize(4);
 	}
 
 	@Test
-	public void countDistinctMesoregion() {
+	public void shouldCountDistinctingByMesoregion() {
 		final List<String> distinctFields = asList("Leste Rondoniense", "Agreste Paraibano", "Madeira-Guaporé");
 
 		final List<City> readCities = ObjectIOUtils.read(new ByteArrayInputStream(FILE_CONTENT.getBytes()), City.class);
@@ -32,7 +32,7 @@ public class CollectionUtilsTest {
 	}
 
 	@Test
-	public void filterFromRO() {
+	public void shouldFilterByPropertyUfRO() {
 		final List<City> cities = asList(
 			new City((long) 1100015, "RO", "Alta Floresta D'Oeste", false, -61.9998238963, -11.9355403048,
 				"Alta Floresta D'Oeste", "", "Cacoal", "Leste Rondoniense"),
