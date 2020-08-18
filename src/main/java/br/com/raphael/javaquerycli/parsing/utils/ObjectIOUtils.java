@@ -11,11 +11,11 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 import br.com.raphael.javaquerycli.parsing.exception.InvalidDataSetException;
 import br.com.raphael.javaquerycli.parsing.exception.ParsingException;
-import br.com.raphael.javaquerycli.parsing.exception.PropertyNotFoundException;
 
 public class ObjectIOUtils {
 
@@ -72,16 +72,13 @@ public class ObjectIOUtils {
 	}
 
 	private static <T> String getValue(T object, String property) {
-		Object value;
-		try {
-			value = ObjectUtils.getValue(object, property);
-			if(value instanceof Boolean)
-				return Boolean.TRUE.equals(value) ? value.toString() : "";
-			return value != null ? value.toString() : null;
-		} catch(final PropertyNotFoundException ex) {
-			ex.printStackTrace();
-			return null;
-		}
+		return Optional.ofNullable(ObjectUtils.getValue(object, property))
+			.map(value -> {
+				if(value instanceof Boolean)
+					return Boolean.TRUE.equals(value) ? value.toString() : "";
+				return value.toString();
+			})
+			.orElse(null);
 	}
 
 	private static void writeContent(PrintWriter writer, String line) {
