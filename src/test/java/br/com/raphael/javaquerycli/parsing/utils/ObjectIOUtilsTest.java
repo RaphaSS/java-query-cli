@@ -29,7 +29,7 @@ public class ObjectIOUtilsTest {
     }
 
     @Test
-    public void leArquivo() {
+    public void shouldReadFileCorrectly() {
         try(InputStream inputStream = new FileInputStream(file)) {
             final List<City> readCities = ObjectIOUtils.read(inputStream, City.class);
 
@@ -40,7 +40,7 @@ public class ObjectIOUtilsTest {
     }
 
     @Test
-    public void escreveLista() {
+    public void shouldWriteListToOutputStream() {
         final OutputStream outputStream = new ByteArrayOutputStream();
         ObjectIOUtils.write(ALL_CITIES, outputStream, City.class);
         final String actual = outputStream.toString();
