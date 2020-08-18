@@ -12,13 +12,13 @@ import br.com.raphael.javaquerycli.engine.exception.InterpretationException;
 public class CommandFactoryTest {
 
     @Test
-    public void countAll() throws InterpretationException {
+    public void shouldCreate_countAllCommand() throws InterpretationException {
         final Command c = CommandFactory.getInstance("count *");
         assertThat(c).isInstanceOf(CountAllCommand.class);
     }
 
     @Test
-    public void countDistinctName() throws InterpretationException {
+    public void shouldCreate_countDistinctNameCommand() throws InterpretationException {
         final Command c = CommandFactory.getInstance("count distinct mesoregion");
         assertThat(c).isInstanceOf(CountDistinctCommand.class);
 
@@ -27,7 +27,7 @@ public class CommandFactoryTest {
     }
 
     @Test
-    public void filterUfRj() throws InterpretationException {
+    public void shouldCreate_filterUfRjCommand() throws InterpretationException {
         final Command c = CommandFactory.getInstance("filter uf RJ");
         assertThat(c).isInstanceOf(FilterCommand.class);
 
@@ -37,7 +37,7 @@ public class CommandFactoryTest {
     }
 
     @Test
-    public void filterMesoregionGrandeFlorianopolis() throws InterpretationException {
+    public void shouldCreate_filterMesoregionGrandeFlorianopolisCommand() throws InterpretationException {
         final Command c = CommandFactory.getInstance("filter mesoregion 'Grande Florianópolis'");
         assertThat(c).isInstanceOf(FilterCommand.class);
 
